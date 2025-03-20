@@ -1,17 +1,11 @@
-"""
-Настройка подключения к базе данных.
-"""
-
-from sqlalchemy import create_engine
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from config import settings
 
-# Создаем движок SQLAlchemy
-engine = create_engine(settings.database.url, echo=settings.debug)
+# Создаем асинхронный движок SQLAlchemy
+engine = create_async_engine(settings.database.url, echo=settings.debug)
 
-# Фабрика сессий для работы с БД
-AsyncSessionLocal = sessionmaker(
+# Фабрика асинхронных сессий для работы с БД
+AsyncSessionLocal = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,
     expire_on_commit=False

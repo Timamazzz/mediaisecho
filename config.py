@@ -17,7 +17,7 @@ class DatabaseSettings(BaseSettings):
     @property
     def url(self) -> str:
         """Генерация строки подключения к PostgreSQL"""
-        return f"postgresql://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
+        return f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
 
 
 class Settings(BaseSettings):

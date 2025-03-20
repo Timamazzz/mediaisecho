@@ -25,3 +25,4 @@ class ExpertCreateRequest(BaseModel):
                 "description": "Expert in Python",
             }
         }
+        from_attributes = True

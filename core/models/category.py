@@ -9,14 +9,11 @@ class Category(Base):
 
     __tablename__ = "categories"
 
-    id = Column(Integer, primary_key=True, index=True)
-    """Уникальный идентификатор категории (целое число)."""
-
     name = Column(String(200), unique=True, nullable=False)
     """Название категории (строка, обязательное поле, уникальное)."""
 
-    experts = relationship(
-        "Expert",
-        back_populates="categories"
-    )
-    """Связь с моделью Expert через многие ко многим."""
+    # experts = relationship(
+    #     "Expert",
+    #     back_populates="categories",
+    # )
+    # """Связь с моделью Expert через многие ко многим."""

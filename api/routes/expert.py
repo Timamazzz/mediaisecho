@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from infrastructure.database import AsyncSessionLocal
 from infrastructure.repositories.expert_repo import ExpertRepository
 from api.contracts.request.expert.expert_create_request import ExpertCreateRequest
@@ -12,12 +11,9 @@ router = APIRouter()
 
 
 # DI: Создание сессии БД
-def get_db():
-    db = AsyncSessionLocal()
-    try:
+async def get_db():
+    async with AsyncSessionLocal() as db:
         yield db
-    finally:
-        db.close()
 
 
 # DI: Создание сервиса
@@ -29,7 +25,10 @@ def get_expert_service(db: AsyncSession = Depends(get_db)):
 @router.get("/experts/{expert_id}", response_model=ExpertResponse)
 async def get_expert(expert_id: int, service: ExpertService = Depends(get_expert_service)):
     """Получает эксперта по ID"""
-    return await service.get_expert(expert_id)
+    expert_dto = await service.get_expert(expert_id)
+    if expert_dto:
+        return ExpertResponse.model_validate(expert_dto)
+    return None
 
 
 @router.post("/experts/", response_model=ExpertResponse)
@@ -41,4 +40,5 @@ async def create_expert(expert_data: ExpertCreateRequest, service: ExpertService
         middle_name=expert_data.middle_name,
         description=expert_data.description,
     )
-    return await service.create_expert(dto)
+    expert_dto = await service.create_expert(dto)
+    return ExpertResponse.model_validate(expert_dto)

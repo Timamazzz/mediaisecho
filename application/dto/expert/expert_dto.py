@@ -5,6 +5,8 @@ from typing import Optional
 class ExpertDTO(BaseModel):
     """DTO для создания эксперта"""
 
+    id: Optional[int] = None
+
     first_name: str
     """Имя эксперта (обязательное поле, строка)."""
 
@@ -16,3 +18,6 @@ class ExpertDTO(BaseModel):
 
     description: str
     """Описание эксперта (обязательное поле, строка)."""
+
+    class Config:
+        from_attributes = True
